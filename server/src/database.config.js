@@ -15,7 +15,7 @@ const sequelize = new Sequelize('bio_bank', 'root', '', {
       }
  }
 
-
 module.exports = {
-    checkConnection
+    checkConnection,
+    sequelize
 }
