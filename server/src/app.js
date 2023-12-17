@@ -12,7 +12,7 @@ sequelize.sync();
 app.use(express.json());
 
 // routes
-app.use('/api/v1/collections',ensureUniqueCollection, collectionRouter);
+app.use('/api/v1/collections' ,collectionRouter);
 
 
 

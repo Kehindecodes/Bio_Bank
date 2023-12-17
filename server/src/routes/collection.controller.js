@@ -1,4 +1,5 @@
 const Collection = require('../models/Collection');
+// create a new collection
 async function createCollection(req, res) {
     try {
         const {diseaseTerm, title} = req.body;
