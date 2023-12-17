@@ -13,9 +13,9 @@ const Sample = sequelize.define('Sample', {
      }
 })
 
-// associate sample with collection
-Sample.belongsTo(Collection, {
-    foreignKey: 'collectionId'
-})
+// // associate sample with collection
+// Sample.belongsTo(Collection, {
+//     foreignKey: 'collectionId'
+// })
 
 module.exports = Sample

@@ -11,10 +11,14 @@
     title: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+ }, {
+     timestamps: true,
+     updatedAt: false
+
  })
 
- // associate collection with sample
- Collection.hasMany(Sample);
+//  // associate collection with sample
+//  Collection.hasMany(Sample);
 
  module.exports = Collection

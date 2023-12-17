@@ -1,10 +1,18 @@
 const express = require('express');
 const {sequelize} = require('./database.config');
+const collectionRouter = require('./routes/collection.route');
+const {ensureUniqueCollection} = require('./middleware/ensureUniqueCollection');
 
 const app = express();
 
 // sync sequelize models with database
 sequelize.sync();
+
+// middlewares
+app.use(express.json());
+
+// routes
+app.use('/api/v1/collections',ensureUniqueCollection, collectionRouter);
 
 
 
