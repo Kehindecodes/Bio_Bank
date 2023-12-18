@@ -12,6 +12,9 @@
         type: DataTypes.STRING,
         allowNull: false
     },
+ }, {
+     timestamps: true,
+     updatedAt: false
  })
 
 //  // associate collection with sample

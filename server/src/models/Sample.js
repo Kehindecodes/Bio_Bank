@@ -11,6 +11,9 @@ const Sample = sequelize.define('Sample', {
          type: DataTypes.STRING,
          allowNull: false
      }
+},{
+     timestamps: true,
+     createdAt: false
 })
 
 // // associate sample with collection
