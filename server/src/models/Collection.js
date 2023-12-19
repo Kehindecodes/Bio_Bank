@@ -1,6 +1,5 @@
  const {DataTypes, Model} = require('sequelize')
  const {sequelize} = require('../database.config')
- const Sample = require('./Sample')
 
  const Collection = sequelize.define('Collection', {
      

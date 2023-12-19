@@ -10,7 +10,16 @@ const Sample = sequelize.define('Sample', {
      materialType: {
          type: DataTypes.STRING,
          allowNull: false
+     },
+     collectionId: {
+         type: DataTypes.INTEGER,
+         allowNull: false,
+         references: {
+             model: Collection,
+             key: 'id'
+         }
      }
+
 },{
      timestamps: true,
      createdAt: false
