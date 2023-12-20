@@ -1,5 +1,5 @@
 const express = require('express');
-const {sequelize} = require('./database.config');
+const {sequelize} = require('./services/database.config');
 const collectionRouter = require('./routes/collection.route');
 
 const app = express();

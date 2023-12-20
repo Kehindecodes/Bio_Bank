@@ -1,5 +1,5 @@
  const {DataTypes, Model} = require('sequelize')
- const {sequelize} = require('../database.config')
+ const {sequelize} = require('../services/database.config')
 
  const Collection = sequelize.define('Collection', {
      

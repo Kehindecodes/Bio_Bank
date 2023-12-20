@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./app');
-const{checkConnection} = require('./database.config');
+const{checkConnection} = require('./services/database.config');
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5050;
