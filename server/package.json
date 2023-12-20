@@ -1,12 +1,12 @@
 {
   "name": "bio-bank-api",
   "version": "1.0.0",
-  "description": "Tissue Sample Collection API",
+  "description": "Tissue Sample Directory API",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "test": "jest",
-    "test-watch": "jest --watch",
+    "test-watch": "jest --watch --detectOpenHandles",
     "dev": "nodemon src/server.js"
   },
   "author": "",

@@ -46,7 +46,7 @@ async function addSample(req, res) {
             message: "donorCount is required",
         });
     }
-    // make sure donorCount is a number
+    // check if donorCount is a number
     if (typeof donorCount !== "number") {
         return res.status(400).json({
             message: "donorCount must be a number",
