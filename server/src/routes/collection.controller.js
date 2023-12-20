@@ -1,5 +1,6 @@
 const Collection = require("../models/Collection");
 const Sample = require('../models/Sample');
+const { getPagination } = require("../services/query");
 // create a new collection
 async function createCollection(req, res) {
     try {
@@ -25,11 +26,10 @@ async function createCollection(req, res) {
 }
 
 async function getAllCollection(req, res) {
-    const offset = parseInt(req.query?.offset) || 0;
-    const limit = parseInt(req.query?.limit) || 10;
+    const { skip, limit } = getPagination(req.query);
     try {
         const collections = await Collection.findAll({
-            offset: offset,
+            offset: skip,
             limit: limit,
         });
          res.status(200).json(collections);
@@ -72,11 +72,15 @@ async function addSample(req, res) {
 // get all samples in a collection
 async function getAllSamples(req, res) {
     const collectionId = req.params.collectionId;
+    const { skip, limit } = getPagination(req.query);
     try {
         const samples = await Sample.findAll({
             where: {
                 collectionId: collectionId
-            }
+            },
+            offset: skip,
+            limit: limit,
+
         });
         res.status(200).json(samples);
     } catch (error) {
