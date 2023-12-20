@@ -28,13 +28,13 @@ describe('Collection API', () => {
             diseaseTerm: '',
             title: '',
         }
-        // test('it should create a new collection', async () => {
-        //     const response = await request(app)
-        //     .post('/api/v1/collections')
-        //     .send(reqBody)
-        //     .expect('Content-Type', /json/)
-        //     .expect(201);
-        // })
+        test('it should create a new collection', async () => {
+            const response = await request(app)
+            .post('/api/v1/collections')
+            .send(reqBody)
+            .expect('Content-Type', /json/)
+            .expect(201);
+        })
         test('it should not create a new collection if collection already exists', async () => {
             const response = await request(app)
             .post('/api/v1/collections')
