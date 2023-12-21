@@ -88,11 +88,43 @@ async function getAllSamples(req, res) {
     }
 }
 
+// delete a collection
+// async function deleteCollection(req, res) {
+//     const collectionId = req.params.collectionId;
+//     try {
+//         await Collection.destroy({
+//             where: {
+//                 id: collectionId
+//             }
+//         });
+//         res.status(200).json({ message: "Collection deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: "Failed to delete collection" });
+//     }
+// }
+
+// // deletes all sample from a collection
+// async function deleteSample(req, res) {
+//     const collectionId = req.params.collectionId;
+//     try {
+//         await Sample.destroy({
+//             where: {
+//                 // id: sampleId,
+//                 collectionId: collectionId
+//             }
+//         });
+//         res.status(200).json({ message: "Sample deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ error: "Failed to delete sample" });
+//     }
+// }
+
+
 
 
 module.exports = {
     createCollection,
     getAllCollection,
     addSample,
-    getAllSamples
+    getAllSamples,
 };
