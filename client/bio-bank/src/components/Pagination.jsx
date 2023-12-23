@@ -14,8 +14,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`relative block rounded-full  px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  text-white hover:bg-neutral-700 hover:text-white ${
-            currentPage === page ? 'bg-primary-500 text-surface-100' : 'bg-transparent text-neutral-600'
+          className={`relative block rounded-full  px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  hover:bg-neutral-700 hover:text-white ${
+            currentPage === page ? 'bg-primary-500 text-surface-100' : 'bg-transparent text-surface-600'
           }`}
         >
           {page}
