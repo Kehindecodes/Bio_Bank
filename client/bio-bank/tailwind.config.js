@@ -6,7 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      extend: {
         colors: {
           'primary-100': '#2192ff',
           'primary-200': '#529dff',
@@ -20,8 +19,12 @@ export default {
           'surface-400': '#505457',
           'surface-500': '#6b6e71',
           'surface-600': '#86898b',
+          'white': '#ffffff',
+          'lightGray': '#f5f5f5',
+          'grayLight': '#e0e0e0',
+          'grayMedium': '#a0a0a0',
+          'line-divider': '#FFFFFF1F'
         },
-      },
     },
   },
   plugins: [],
