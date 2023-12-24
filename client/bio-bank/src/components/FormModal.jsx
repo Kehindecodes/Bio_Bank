@@ -6,6 +6,8 @@ const FormModal = ({
     onCancel,
     text1,
     text2,
+    type1,
+    type2,
     onSubmit,
 }) => {
     return (
@@ -35,15 +37,15 @@ const FormModal = ({
                                     {/* form */}
                                     <form className="mt-2">
                                         <input
-                                            className="appearance-none  bg-transparent border  border-line-divider rounded-full w-full py-3 px-3 text-surface-600 leading-tight  focus:outline-none focus:shadow-outline mt-4 mb-3"
+                                            className="appearance-none  bg-transparent border  border-line-divider rounded-full w-full py-3 px-3 text-surface-600 leading-tight  focus:outline-none focus:border-primary-500 mt-4 mb-3"
                                             id={text1}
-                                            type="text"
+                                            type={type1}
                                             placeholder={placeholder1}
                                         />
                                         <input
-                                            className="shadow appearance-none bg-transparent border  border-line-divider rounded-full w-full py-3 px-3 text-surface-600 leading-tight focus:outline-none focus:shadow-outline mt-4 mb-3"
+                                            className="shadow appearance-none bg-transparent border  border-line-divider rounded-full w-full py-3 px-3 text-surface-600 leading-tight focus:outline-none focus:shadow-outline focus:border-primary-500 mt-4 mb-3"
                                             id={text2}
-                                            type="text"
+                                            type={type2}
                                             placeholder={placeholder2}
                                         />
                                         <div className="bg-transparent  py-3  sm:flex sm:flex-row-reverse">
@@ -59,7 +61,7 @@ const FormModal = ({
                                                 <button
                                                     type="button"
                                                     onClick={onCancel}
-                                                    className="inline-flex justify-center w-full rounded-full  px-5 py-2 bg-transparent text-base leading-6 font-medium text-primary-500   focus:outline-none transition ease-in-out duration-150 hover:bg-neutral-700"
+                                                    className="inline-flex justify-center w-full rounded-full  px-5 py-2 bg-transparent text-base leading-6 font-medium text-primary-500   focus:outline-none transition ease-in-out duration-150 hover:bg-surface-500"
                                                 >
                                                     Cancel
                                                 </button>

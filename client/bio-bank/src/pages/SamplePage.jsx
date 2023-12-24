@@ -1,19 +1,21 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import CollectionTable from "../components/CollectionTable";
-import { sampleCollections } from "../simpleCollection";
-import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import FormModal from "../components/FormModal";
-function CollectionPage() {
+import Button from "../components/Button";
+import { sampleData } from "../SampleData";
+import SampleTable from "../components/SampleTable";
+
+
+function SamplePage(){
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
     const itemsPerPage = 5;
-    const totalPages = Math.ceil(sampleCollections.length / itemsPerPage);
+    const totalPages = Math.ceil(sampleData.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const displayedCollections = sampleCollections.slice(startIndex, endIndex);
+    const displayedSamples = sampleData.slice(startIndex, endIndex);
 
     const toggleModal = () => {
       setIsOpen(!isOpen);
@@ -31,28 +33,24 @@ function CollectionPage() {
                 <div className="mt-10 p-10 mb-12">
                     <div className="flex items-center justify-between w-full"> 
                         <h1 className="text-3xl font-bold text-grayLight">
-                            Collections
+                            List of Samples
                         </h1>
                         <Button
-                            className="text-lg text-surface-100 bg-primary-500 hover:bg-primary-600 justify-self-end py-2 px-4"
-                            onClick={toggleModal}
-                        >
-                            Create Collection{" "} 
-                            {/* <FaPlus className="inline ml-2"/> */}
-                        </Button>
+                         className="text-lg text-surface-100 bg-primary-500 hover:bg-primary-600 justify-self-end py-2 px-4"
+                         onClick={toggleModal}
+                         >
+                            Add Sample
+                         </Button>
                     </div>
-
-                    <CollectionTable collections={displayedCollections} />
+                    <SampleTable samples={displayedSamples} />
                     <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-                    {isOpen && <FormModal title="Create New Collection" placeholder1={"Disease Term"} placeholder2={"Title"} ctaText={"Create"}   onCancel={toggleModal} onSubmit={toggleModal}  type1={"text"} type2={"text"} />}
-
+                    {isOpen && <FormModal title="Add New Sample" placeholder1={"Donor Count"} placeholder2={"Material Type"} ctaText={"Add"}   onCancel={toggleModal} onSubmit={toggleModal} type1={"number"} type2={"text"} />}
 
                 </div>
-
-                <Footer />
+                <Footer/>
             </div>
-        </>
-    );
+     </>
+)
 }
 
-export default CollectionPage;
+export default SamplePage
