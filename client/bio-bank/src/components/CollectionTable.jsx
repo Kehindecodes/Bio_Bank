@@ -1,6 +1,7 @@
 import Button from "./Button";
+import { Link } from "react-router-dom";
 
-const CollectionTable = ({ collections }) => {
+const CollectionTable = ({ collections}) => {
   return (
     <table className="min-w-full border-collapse rounded-xl overflow-hidden table-auto mt-8 bg-surface-200 backdrop-blur-lg backdrop-saturate-150 ">
       <thead>
@@ -18,9 +19,12 @@ const CollectionTable = ({ collections }) => {
             <td className="py-4 px-4 text-center text-surface-600">{collection.diseaseTerm}</td>
             <td className="py-4 px-4 text-center text-surface-600">{collection.title}</td>
             <td className="py-4 px-4 ">
+              <Link to={`/samples`}>
               <Button type="outline" className="text-primary-500">
+                {/* <Link to={`/collections/${collection.id}`}> */}
                 View Details
               </Button>
+              </Link>
             </td>
           </tr>
         ))}
