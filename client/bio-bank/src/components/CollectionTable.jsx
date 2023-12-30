@@ -16,13 +16,12 @@ const CollectionTable = ({ collections}) => {
           <tr key={collection.id} className={`${
             index === collections.length - 1 ? '' : 'border-b border-line-divider'
           } hover:bg-surface-300`}>
-            <td className="py-4 px-4 text-center text-surface-600">{collection.diseaseTerm}</td>
-            <td className="py-4 px-4 text-center text-surface-600">{collection.title}</td>
+            <td className="py-4 px-4  text-center text-surface-600">{collection.diseaseTerm}</td>
+            <td className="py-4 px-4  text-center text-surface-600">{collection.title}</td>
             <td className="py-4 px-4 ">
-              <Link to={`/samples`}>
+              <Link to={`/collections/${collection.id}/samples`}>
               <Button type="outline" className="text-primary-500">
-                {/* <Link to={`/collections/${collection.id}`}> */}
-                View Details
+                View Samples
               </Button>
               </Link>
             </td>

@@ -31,8 +31,14 @@ async function getAllCollection(req, res) {
         const collections = await Collection.findAll({
             offset: skip,
             limit: limit,
+            order: [["createdAt", "DESC"]],
         });
-         res.status(200).json(collections);
+        // get total records in the database
+        const totalRecords = await Collection.count();
+         res.status(200).json({
+             result: collections,
+             totalRecords: totalRecords
+         });
     } catch (error) {
          res.status(500).json({ error: "Failed to get collections" });
     }
@@ -72,30 +78,22 @@ async function addSample(req, res) {
 // get all samples in a collection
 async function getAllSamples(req, res) {
     const collectionId = req.params.collectionId;
-    const { skip, limit } = getPagination(req.query);
+    // const { skip, limit } = getPagination(req.query);
     try {
         const samples = await Sample.findAll({
             where: {
                 collectionId: collectionId
             },
-            offset: skip,
-            limit: limit,
+            // offset: skip,
+            // limit: limit,
 
         });
+        // const totalRecords = await Sample.count({ where: { collectionId: collectionId } });
         res.status(200).json(samples);
     } catch (error) {
         res.status(500).json({ error: "Failed to get samples" });
-    }
-}
-
-// delete a collection
-// async function deleteCollection(req, res) {
-//     const collectionId = req.params.collectionId;
-//     try {
-//         await Collection.destroy({
-//             where: {
-//                 id: collectionId
-//             }
+    }     
+     }
 //         });
 //         res.status(200).json({ message: "Collection deleted successfully" });
 //     } catch (error) {
