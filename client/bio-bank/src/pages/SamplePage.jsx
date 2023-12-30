@@ -8,10 +8,11 @@ import SampleTable from "../components/SampleTable";
 import useSWR, { useSWRConfig } from "swr";
 import axios from "axios";
 import SkeletonLoader from "../components/SkeletonLoader";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaArrowLeftLong } from "react-icons/fa6"
 
 const fetcher = async (url) => {
     const response = await new Promise((resolve) => {
@@ -86,6 +87,14 @@ function SamplePage() {
             <div className="w-screen h-full  bg-surface-100">
                 <Header />
                 <div className="mt-10 p-10 mb-12 h-screen ">
+                    {/* back button with icon from react-icons */}
+                    <div className="mb-10 w-1/4">
+                    <Link to={`/`} className={`text-surface-600 hover:text-primary-500 flex items-center text-lg`}>
+                      <FaArrowLeftLong />  <span className="ml-2">Back to Collection </span> 
+                    </Link>
+                    </div>
+                     
+                    
                     <div className="flex items-center justify-between w-full">
                         <h1 className="text-3xl font-bold text-grayLight">
                             List of Samples
