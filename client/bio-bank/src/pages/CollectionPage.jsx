@@ -25,7 +25,7 @@ const fetcher = async (url) => {
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
-    const [Loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -46,7 +46,7 @@ function CollectionPage() {
     const totalPages = Math.ceil(
         data && data.totalRecords / DEFAULT_PAGE_LIMIT
     );
-    const displayedCollections = data && data.result.slice(startIndex, endIndex)
+    // const displayedCollections = data && data.result.slice(startIndex, endIndex)
     // console.log(totalPages);
 
     const toggleModal = () => {
@@ -146,7 +146,7 @@ function CollectionPage() {
                             onSubmit={handleSubmit(onSubmit)}
                             errors={errors}
                             register={register}
-                            isLoading={Loading}
+                            isLoading={loading}
                         />
                     )}
                 </div>
