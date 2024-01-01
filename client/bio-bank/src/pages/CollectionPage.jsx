@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CollectionTable from "../components/CollectionTable";
@@ -11,17 +11,14 @@ import SkeletonLoader from "../components/SkeletonLoader";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getCollections, createCollection,collectionsUrlEndpoint } from "../api/collectionApi";
+import { createCollectionOptions } from "../api/SWROptions";
 
-const fetcher = async (url) => {
-    const response = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const result = await axios.get(url);
-            resolve(result);
-        }, 2000);
-    });
 
-    return response.data;
-};
+// const fetcher = async (url) => {
+//         const response = await axios.get(url);
+//         return response.data;
+// };
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +26,21 @@ function CollectionPage() {
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
+    const [displayedCollections, setDisplayedCollections] = useState([]);
+
+/**
+     * Creates a new mutation by adding a new collection to the existing collections.
+     *
+     * @param {Object} newCollection - The new collection to be added.
+     * @param {Array} collections - The existing collections.
+     * @return {Array} The updated collections with the new collection added.
+     */
+    const createMutation = async (newCollection, collections) =>{
+        const response = await createCollection(newCollection);
+        return [...collections.result, response];
+      }
    
-    const { mutate } = useSWRConfig();
+    const { mutate} = useSWRConfig();
     const {
         register,
         handleSubmit,
@@ -39,15 +49,21 @@ function CollectionPage() {
     } = useForm();
 
     const DEFAULT_PAGE_LIMIT = 5;
-    const { data, error, isLoading } = useSWR(
-        `http://localhost:5050/api/v1/collections?page=${currentPage} & limit=${DEFAULT_PAGE_LIMIT} `,
-        fetcher
+    const { data: collections, error, isLoading} = useSWR(
+        collectionsUrlEndpoint,
+        getCollections,{
+            onSuccess: (collections) => collections.result.sort((a, b) => b.id - a.id)
+        }
     );
     const totalPages = Math.ceil(
-        data && data.totalRecords / DEFAULT_PAGE_LIMIT
+        collections && collections.totalRecords / DEFAULT_PAGE_LIMIT
     );
-    // const displayedCollections = data && data.result.slice(startIndex, endIndex)
-    // console.log(totalPages);
+    useEffect(() => {
+        if (collections) {
+            const displayedCollection = collections.result.slice(startIndex, endIndex);
+            setDisplayedCollections(displayedCollection);
+        }
+    }, [collections, startIndex, endIndex]);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -55,49 +71,59 @@ function CollectionPage() {
     const handlePageChange = async (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
-            const newData = await fetcher(
-                `http://localhost:5050/api/v1/collections?page=${newPage}`
-            );
-            mutate(newData, true);
         }
     };
-    const handleCreateCollection = async (diseaseTerm, title) => {
+    const handleCreateCollection = async (newCollection) => {
         try {
-            const response = await axios.post(
-                "http://localhost:5050/api/v1/collections",
-                {
-                    diseaseTerm,
-                    title,
-                }
+            await mutate(
+                createMutation(newCollection, collections),
+                createCollectionOptions(newCollection),
             );
-
-            if (response.status === 201) {
-                setLoading(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    toast.success("Collection created successfully");
-                    reset();
-                    mutate("http://localhost:5050/api/v1/collections",{
-                        optimisticData: data,
-                        rollbackOnError: true,
-                        populateCache: true,
-                        revalidate: false
-                    });
-                }, 2000);
-            }
-        } catch (response) {
-            setLoading(false);
-            toast.error(response.response.data.message);
+            // update displayedCollections
+            setDisplayedCollections((collections) => [
+                newCollection,
+                ...collections
+            ].sort((a, b) => b.id - a.id));
+            console.log(displayedCollections);
+            toast.success("Collection created successfully", {
+                duration: 1000,
+            });
+            
+        } catch (err) {
+            // setLoading(false);
+            toast.error("Failed to create collection", {
+                duration: 1000,
+            });
         }
     };
 
-    const onSubmit = async (data) => {
+    
+
+    const onSubmit = async (inputs,) => {
+        const{input1, input2} = inputs;
+        // try {
+        //     // const newResult = mutate('http://localhost:5050/api/v1/collections',handleCreateCollection(data.input1, data.input2), {
+        //     //     optimisticData: [...data.result, { diseaseTerm: data.input1, title: data.input2 }],
+        //     //     populateCache: true,
+        //     //     revalidate: true,
+        //     //     rollbackOnError: true,
+        //     // });   
+        //     // console.log(newResult);
+        //    await handleCreateCollection(data.input1, data.input2)
+            
+        // } catch (error) {
+        //     //   console.error("Error creating collection:", error);
+        //     setLoading(false);
+        // }
         try {
-            await handleCreateCollection(data.input1, data.input2);
+            await handleCreateCollection({diseaseTerm: input1, title: input2});
+
+            reset();
+           
         } catch (error) {
-            //   console.error("Error creating collection:", error);
             setLoading(false);
         }
+
     };
     return (
         <>
@@ -115,14 +141,14 @@ function CollectionPage() {
                             Create Collection{" "}
                         </Button>
                     </div>
-                    {error && <p>There was an error fetching data</p>}
+                    {error && <p className="text-surface-600 text-lg">There was an error fetching data</p>}
                     {isLoading ? (
                         <>
                             <SkeletonLoader />
                         </>
                     ) : (
                         <>
-                            <CollectionTable collections={data.result} />
+                            <CollectionTable collections={displayedCollections} />
                             <Pagination
                                 currentPage={currentPage}
                                 totalPages={totalPages}

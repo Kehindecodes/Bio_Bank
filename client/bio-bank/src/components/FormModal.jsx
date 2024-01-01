@@ -49,6 +49,7 @@ const FormModal = ({
                                             }`}
                                             type={input1.type}
                                             placeholder={input1.placeholder}
+                                            
                                             {...register("input1", {
                                                 required: true,
                                             })}
