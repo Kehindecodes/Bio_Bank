@@ -15,23 +15,23 @@ async function createCollection(req, res) {
                 message: "title is required",
             });
         }
-        await Collection.create({
+      const collection =   await Collection.create({
             diseaseTerm,
             title,
         });
-        res.status(201).json({});
+        res.status(201).json(collection);
     } catch (error) {
         res.status(500).json({ error: "Failed to create collection" });
     }
 }
 
 async function getAllCollection(req, res) {
-    const { skip, limit } = getPagination(req.query);
+    // const { skip, limit } = getPagination(req.query);
     try {
         const collections = await Collection.findAll({
-            offset: skip,
-            limit: limit,
-            order: [["createdAt", "DESC"]],
+            // offset: skip,
+            // limit: limit,
+            // order: [["createdAt", "DESC"]],
         });
         // get total records in the database
         const totalRecords = await Collection.count();

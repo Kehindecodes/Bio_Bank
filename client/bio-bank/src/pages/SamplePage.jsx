@@ -13,32 +13,33 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6"
+import {getSamples, samplesUrlEndpoint, createSample} from "../api/sampleApi";
 
-const fetcher = async (url) => {
-    const response = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const result = await axios.get(url);
-            resolve(result);
-        }, 2000);
-    });
-    return response.data;
-};
+// const fetcher = async (url) => {
+//     const response = await new Promise((resolve) => {
+//         setTimeout(async () => {
+//             const result = await axios.get(url);
+//             resolve(result);
+//         }, 2000);
+//     });
+//     return response.data;
+// };
 
   
 function SamplePage() {
-    const [currentPage, setCurrentPage] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     // get collection id from url
     const { collectionId } = useParams();
-    const { mutate } = useSWRConfig();
+    // const { mutate } = useSWRConfig();
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
     } = useForm();
-    const { data, error, isLoading } = useSWR(
+    const { data:samples, error, isLoading } = useSWR(
         `http://localhost:5050/api/v1/collections/${collectionId}/samples `,
         fetcher
     );
