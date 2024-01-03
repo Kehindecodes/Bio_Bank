@@ -1,10 +1,8 @@
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import SkeletonLoader from "./SkeletonLoader";
 
 
 const CollectionTable = ({ collections}) => {
-  console.log(collections)
   return (
     <table className="min-w-full border-collapse rounded-xl overflow-hidden table-auto mt-8 bg-surface-200 backdrop-blur-lg backdrop-saturate-150 ">
       <thead>

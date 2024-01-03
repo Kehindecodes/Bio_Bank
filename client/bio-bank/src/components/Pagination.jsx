@@ -1,25 +1,14 @@
 import { useState } from 'react';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const maxPageNumbers = 3; // You can adjust this based on your design preference
-    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-
     const [inputPage, setInputPage] = useState('');
   
-  //   const renderPageNumbers = () => {
-  //     const pageNumbers = [];
-  // for (let i = 1; i <= totalPages; i++) {
-  //   pageNumbers.push(i);
-  // }
-
   const renderPageNumbers = () => {
-    const maxPageNumbers = 3;
+    const visiblePageNumbers = 3;
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-    const startIndex = Math.max(currentPage - Math.floor(maxPageNumbers / 2), 1);
-    const endIndex = Math.min(startIndex + maxPageNumbers - 1, totalPages);
-
+    const startIndex = Math.max(currentPage - Math.floor(visiblePageNumbers / 2), 1);
+    const endIndex = Math.min(startIndex + visiblePageNumbers - 1, totalPages);
     
-
     return pageNumbers.slice(startIndex - 1, endIndex).map((page) => (
         <button
           key={page}
@@ -38,6 +27,13 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       setInputPage(value);
     };
   
+    /**
+     * Handles the click event when the "Go" button is clicked.
+     *
+     * @param {number} inputPage - The input page number.
+     * @param {number} totalPages - The total number of pages.
+     * @param {function} onPageChange - The function to call when the page is changed.
+     */
     const handleGoClick = () => {
       const pageNumber = parseInt(inputPage, 10);
       if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
@@ -54,6 +50,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             className={`relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400 hover:text-primary-500 ${
                 currentPage > 1 ? '' : 'pointer-events-none'
             }`}
+            disabled={currentPage === 1}
           >
             Previous
           </button>
@@ -66,6 +63,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             className={`relative block rounded-full bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 text-neutral-400 hover:text-primary-500 ${
                 currentPage < totalPages ? '' : 'pointer-events-none'
             } `}
+            disabled={currentPage === totalPages}
           >
             Next
           </button>

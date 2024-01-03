@@ -43,9 +43,8 @@ function CollectionPage() {
             collections.result.sort((a, b) => b.id - a.id),
     });
 
-    const DEFAULT_PAGE_LIMIT = 5;
     const totalPages = Math.ceil(
-        collections && collections.totalRecords / DEFAULT_PAGE_LIMIT
+        collections && collections.totalRecords / itemsPerPage
     );
     const displayedCollection =
         collections &&
@@ -85,7 +84,6 @@ function CollectionPage() {
                 createMutation(newCollection, collections),
                 createCollectionOptions(newCollection)
             );
-            console.log(collections.result);
             toast.success("Collection created successfully", {
                 duration: 1000,
             });
@@ -113,7 +111,7 @@ function CollectionPage() {
                 title: input2,
             });
         } catch (error) {
-            setLoading(false);
+            console.log(error);
         }
     };
     return (

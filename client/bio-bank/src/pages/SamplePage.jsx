@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Pagination from "../components/Pagination";
 import FormModal from "../components/FormModal";
 import Button from "../components/Button";
 import SampleTable from "../components/SampleTable";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import axios from "axios";
 import SkeletonLoader from "../components/SkeletonLoader";
 import { useParams, Link } from "react-router-dom";
@@ -13,20 +12,15 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6"
-import {getSamples, samplesUrlEndpoint, addSample} from "../api/sampleApi";
+import {addSample, delay} from "../api/sampleApi";
 import { addSampleOptions } from "../api/SWROptions";
 
 const fetcher = async (url) => {
-    const response = await new Promise((resolve) => {
-        setTimeout(async () => {
-            const result = await axios.get(url);
-            resolve(result);
-        }, 2000);
-    });
+    await delay();
+    const response = await axios.get(url);
     return response.data;
 };
 
-  
 function SamplePage() {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -72,7 +66,6 @@ function SamplePage() {
             },1000)
         }catch(error){
             setLoading(false)
-            console.log(error)
             toast.error(error.response.data.message,{
                 duration: 1000
             })

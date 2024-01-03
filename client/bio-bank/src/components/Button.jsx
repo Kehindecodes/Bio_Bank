@@ -1,3 +1,13 @@
+/**
+ * Creates a button component with customizable styles and behavior.
+ *
+ * @param {Object} props - The properties for the button component.
+ * @param {string} [props.type='normal'] - The type of the button. Can be 'normal' or 'outline'.
+ * @param {ReactNode} props.children - The content of the button.
+ * @param {string} [props.className=''] - Additional CSS class names for the button.
+ * @param {object} props.props - Additional props to be spread onto the button element.
+ * @return {ReactElement} The rendered button component.
+ */
 const Button = ({
     type = 'normal',
     children,
