@@ -11,14 +11,13 @@ import SkeletonLoader from "../components/SkeletonLoader";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getCollections, createCollection,collectionsUrlEndpoint } from "../api/collectionApi";
+import {
+    getCollections,
+    createCollection,
+    collectionsUrlEndpoint,
+} from "../api/collectionApi";
 import { createCollectionOptions } from "../api/SWROptions";
 
-
-// const fetcher = async (url) => {
-//         const response = await axios.get(url);
-//         return response.data;
-// };
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
@@ -26,21 +25,7 @@ function CollectionPage() {
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const [displayedCollections, setDisplayedCollections] = useState([]);
 
-/**
-     * Creates a new mutation by adding a new collection to the existing collections.
-     *
-     * @param {Object} newCollection - The new collection to be added.
-     * @param {Array} collections - The existing collections.
-     * @return {Array} The updated collections with the new collection added.
-     */
-    const createMutation = async (newCollection, collections) =>{
-        const response = await createCollection(newCollection);
-        return [...collections.result, response];
-      }
-   
-    const { mutate} = useSWRConfig();
     const {
         register,
         handleSubmit,
@@ -48,82 +33,88 @@ function CollectionPage() {
         formState: { errors },
     } = useForm();
 
+    const {
+        data: collections,
+        error,
+        isLoading,
+        mutate,
+    } = useSWR(collectionsUrlEndpoint, getCollections, {
+        onSuccess: (collections) =>
+            collections.result.sort((a, b) => b.id - a.id),
+    });
+
     const DEFAULT_PAGE_LIMIT = 5;
-    const { data: collections, error, isLoading} = useSWR(
-        collectionsUrlEndpoint,
-        getCollections,{
-            onSuccess: (collections) => collections.result.sort((a, b) => b.id - a.id)
-        }
-    );
     const totalPages = Math.ceil(
         collections && collections.totalRecords / DEFAULT_PAGE_LIMIT
     );
-    useEffect(() => {
-        if (collections) {
-            const displayedCollection = collections.result.slice(startIndex, endIndex);
-            setDisplayedCollections(displayedCollection);
-        }
-    }, [collections, startIndex, endIndex]);
+    const displayedCollection =
+        collections &&
+        collections.result &&
+        collections.result.slice(startIndex, endIndex);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
+
+    /**
+     * Creates a new mutation by adding a new collection to the existing collections.
+     *
+     * @param {Object} newCollection - The new collection to be added.
+     * @param {Array} collections - The existing collections.
+     * @return {Array} The updated collections with the new collection added.
+     */
+    const createMutation = async (newCollection, collections) => {
+        const response = await createCollection(newCollection);
+        return [response, ...collections.result];
+    };
+    
     const handlePageChange = async (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
         }
     };
+    /**
+     * Handles the creation of a new collection.
+     *
+     * @param {object} newCollection - The new collection to be created.
+     * @return {Promise} A promise that resolves with the result of the creation.
+     */
     const handleCreateCollection = async (newCollection) => {
         try {
             await mutate(
                 createMutation(newCollection, collections),
-                createCollectionOptions(newCollection),
+                createCollectionOptions(newCollection)
             );
-            // update displayedCollections
-            setDisplayedCollections((collections) => [
-                newCollection,
-                ...collections
-            ].sort((a, b) => b.id - a.id));
-            console.log(displayedCollections);
+            console.log(collections.result);
             toast.success("Collection created successfully", {
                 duration: 1000,
             });
-            
+            reset();
+            toggleModal();
         } catch (err) {
-            // setLoading(false);
-            toast.error("Failed to create collection", {
+            toast.error(err.response.data.message, {
                 duration: 1000,
             });
         }
     };
-
-    
-
-    const onSubmit = async (inputs,) => {
-        const{input1, input2} = inputs;
-        // try {
-        //     // const newResult = mutate('http://localhost:5050/api/v1/collections',handleCreateCollection(data.input1, data.input2), {
-        //     //     optimisticData: [...data.result, { diseaseTerm: data.input1, title: data.input2 }],
-        //     //     populateCache: true,
-        //     //     revalidate: true,
-        //     //     rollbackOnError: true,
-        //     // });   
-        //     // console.log(newResult);
-        //    await handleCreateCollection(data.input1, data.input2)
-            
-        // } catch (error) {
-        //     //   console.error("Error creating collection:", error);
-        //     setLoading(false);
-        // }
+    /**
+     * Handles the form submission event.
+     *
+     * @param {Object} inputs - The input values from the form.
+     *     @property {type} input1 - description of input1
+     *     @property {type} input2 - description of input2
+     * @return {Promise} A promise that resolves when the submission is complete.
+     */
+    const onSubmit = async (inputs) => {
+        const { input1, input2 } = inputs;
         try {
-            await handleCreateCollection({diseaseTerm: input1, title: input2});
-
-            reset();
-           
+            await handleCreateCollection({
+                diseaseTerm: input1,
+                title: input2,
+            });
         } catch (error) {
             setLoading(false);
         }
-
     };
     return (
         <>
@@ -141,19 +132,35 @@ function CollectionPage() {
                             Create Collection{" "}
                         </Button>
                     </div>
-                    {error && <p className="text-surface-600 text-lg">There was an error fetching data</p>}
+                    {error && (
+                        <p className="text-surface-600 text-lg">
+                            There was an error fetching data
+                        </p>
+                    )}
                     {isLoading ? (
                         <>
                             <SkeletonLoader />
                         </>
                     ) : (
                         <>
-                            <CollectionTable collections={displayedCollections} />
-                            <Pagination
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                onPageChange={handlePageChange}
-                            />
+                            {" "}
+                             {  collections  && collections.result &&  collections.result.length === 0 ? (
+                                <>
+                                    <p className="text-2xl font-bold text-surface-600 mt-10 text-center w-full h-full my-auto "> There are no collections </p>
+                                </>
+                            ) : (
+                                <>
+                                    <CollectionTable
+                                        collections={displayedCollection}
+                                    />
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </>
+                            )}
+                          
                         </>
                     )}
                     {isOpen && (

@@ -64,12 +64,12 @@ async function addSample(req, res) {
         });
     }
     try {
-        await Sample.create({
+       const sample =  await Sample.create({
             collectionId,
             donorCount,
             materialType
         });
-        res.status(201).json({});
+        res.status(201).json(sample);
     } catch (error) {
         res.status(500).json({ error: "Failed to create sample" });
     }

@@ -9,7 +9,7 @@ const collectionApi = axios.create({
 export const collectionsUrlEndpoint = "/api/v1/collections";
 
 export const getCollections = async () => {
-    await delay();
+    // await delay();
     const response = await collectionApi.get(collectionsUrlEndpoint);
     return response.data;
 }

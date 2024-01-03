@@ -13,71 +13,77 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6"
-import {getSamples, samplesUrlEndpoint, createSample} from "../api/sampleApi";
+import {getSamples, samplesUrlEndpoint, addSample} from "../api/sampleApi";
+import { addSampleOptions } from "../api/SWROptions";
 
-// const fetcher = async (url) => {
-//     const response = await new Promise((resolve) => {
-//         setTimeout(async () => {
-//             const result = await axios.get(url);
-//             resolve(result);
-//         }, 2000);
-//     });
-//     return response.data;
-// };
+const fetcher = async (url) => {
+    const response = await new Promise((resolve) => {
+        setTimeout(async () => {
+            const result = await axios.get(url);
+            resolve(result);
+        }, 2000);
+    });
+    return response.data;
+};
 
   
 function SamplePage() {
-    // const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     // get collection id from url
     const { collectionId } = useParams();
-    // const { mutate } = useSWRConfig();
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
     } = useForm();
-    const { data:samples, error, isLoading } = useSWR(
-        `http://localhost:5050/api/v1/collections/${collectionId}/samples `,
+
+    const { data:samples, error, isLoading, mutate } = useSWR(
+        `http://localhost:5050/api/v1/collections/${collectionId}/samples`, 
         fetcher
     );
-    console.log(data && data);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
-    // const handlePageChange = (newPage) => {
-    //   if (newPage >= 1 && newPage <= totalPages) {
-    //     setCurrentPage(newPage);
-    //   }
-    // };
-    const handleAddSample = async (donorCount,materialType) => {
+    
+    /**
+     * Adds a new sample to the list of samples and returns the updated list.
+     *
+     * @param {Object} newSample - The new sample to be added.
+     * @param {Array} samples - The current list of samples.
+     * @return {Array} - The updated list of samples.
+     */
+    const addMutation = async (newSample, samples) =>{
+        const response = await addSample(collectionId,newSample);
+        return [...samples, response];
+    }
+
+    const handleAddSample = async (newSample) => {
         try{
-            const response = await axios.post(`http://localhost:5050/api/v1/collections/${collectionId}/samples`,{
-                donorCount,
-                materialType
+            mutate(addMutation(newSample, samples), addSampleOptions(newSample))
+            toast.success("Sample Added successfully",{
+                duration: 1000
             })
-            if (response.status === 201) {
-                setLoading(true)
-                setTimeout(() => {
-                    setLoading(false)
-                    toast.success("Sample Added successfully")
-                    reset()
-                    mutate(`http://localhost:5050/api/v1/collections/${collectionId}/samples`)
-                }, 2000)
-            }
-        }catch(response){
+            reset()
+            setTimeout(() => {
+                toggleModal()
+            },1000)
+        }catch(error){
             setLoading(false)
-            toast.error(response.response.data.message)
+            console.log(error)
+            toast.error(error.response.data.message,{
+                duration: 1000
+            })
         }
     }
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (inputs) => {
+        const{input1, input2} = inputs;
         try{
-            console.log(data)
-            await handleAddSample(parseInt(data.input1),data.input2)
+            // console.log(data)
+            await handleAddSample({donorCount: parseInt(input1), materialType: input2});
         }catch(error){
             console.log(error)
         }
@@ -110,10 +116,10 @@ function SamplePage() {
                     {error && <p>There was an error fetching samples</p>}
                     {isLoading ? (
                         <SkeletonLoader />
-                    ) : data.length === 0 ? (
+                    ) :samples.length === 0 ? (
                         <p className="text-2xl font-bold text-surface-600 mt-10 text-center w-full h-full my-auto "> There are no samples in this collection </p>
                     ) : (
-                        <SampleTable samples={data} />
+                        <SampleTable samples={samples } />
                     )}
                     {/* <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} /> */}
                     {isOpen && (

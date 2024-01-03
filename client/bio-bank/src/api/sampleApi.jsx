@@ -14,10 +14,11 @@ export const getSamples = async (collectionId) => {
     return response.data;
 }
 
-export const AddSample = async ({collectionId, donorCount, materialType}) => {
+export const addSample = async ( collectionId, {donorCount, materialType}) => {
     await delay();
     const response = await sampleApi.post(samplesUrlEndpoint.replace(":collectionId", collectionId), {
         donorCount,
         materialType
     })
+    return response.data;
 }
