@@ -8,7 +8,7 @@ This project provides an administrative interface for managing tissue sample col
 
 - **Visualise Collections:** View a comprehensive list of existing sample collections.
 - **Explore Samples:** Deep dive into the details of samples associated with each collection.
-- **Expand Resources:** Add new samples to existing collections, enriching your biobank's potential.
+- **Expand Resources:** Add new samples to existing collections.
 - **Catalog New Collections:** Organize your biological data by creating new collections with ease.
 
 ## Getting Started
