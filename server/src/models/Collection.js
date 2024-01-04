@@ -16,7 +16,4 @@
      updatedAt: false
  })
 
-//  // associate collection with sample
-//  Collection.hasMany(Sample);
-
  module.exports = Collection

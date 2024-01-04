@@ -78,28 +78,19 @@ async function addSample(req, res) {
 // get all samples in a collection
 async function getAllSamples(req, res) {
     const collectionId = req.params.collectionId;
-    // const { skip, limit } = getPagination(req.query);
     try {
         const samples = await Sample.findAll({
             where: {
                 collectionId: collectionId
             },
-            // offset: skip,
-            // limit: limit,
+           
 
         });
-        // const totalRecords = await Sample.count({ where: { collectionId: collectionId } });
         res.status(200).json(samples);
     } catch (error) {
         res.status(500).json({ error: "Failed to get samples" });
     }     
      }
-//         });
-//         res.status(200).json({ message: "Collection deleted successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: "Failed to delete collection" });
-//     }
-// }
 
 // // deletes all sample from a collection
 // async function deleteSample(req, res) {
@@ -116,8 +107,6 @@ async function getAllSamples(req, res) {
 //         res.status(500).json({ error: "Failed to delete sample" });
 //     }
 // }
-
-
 
 
 module.exports = {

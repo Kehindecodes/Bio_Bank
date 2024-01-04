@@ -25,9 +25,4 @@ const Sample = sequelize.define('Sample', {
      createdAt: false
 })
 
-// // associate sample with collection
-// Sample.belongsTo(Collection, {
-//     foreignKey: 'collectionId'
-// })
-
 module.exports = Sample

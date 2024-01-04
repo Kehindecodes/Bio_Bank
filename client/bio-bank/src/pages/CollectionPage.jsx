@@ -118,7 +118,7 @@ function CollectionPage() {
         <>
             <div className="w-screen  h-full bg-surface-100">
                 <Header />
-                <div className="mt-10 p-10 mb-12">
+                <div className="mt-10 p-10 mb-12 h-screen ">
                     <div className="flex items-center justify-between w-full">
                         <h1 className="text-3xl font-bold text-grayLight">
                             Collections
@@ -143,9 +143,9 @@ function CollectionPage() {
                         <>
                             {" "}
                              {  collections  && collections.result &&  collections.result.length === 0 ? (
-                                <>
-                                    <p className="text-2xl font-bold text-surface-600 mt-10 text-center w-full h-full my-auto "> There are no collections </p>
-                                </>
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <p className="text-2xl font-bold text-surface-600 my-auto "> There are no collections yet </p>
+                                </div>
                             ) : (
                                 <>
                                     <CollectionTable

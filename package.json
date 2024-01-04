@@ -4,11 +4,16 @@
   "description": "Tissue Sample Collection",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd server && npm run dev",
+    "client": "cd client/bio-bank && npm run dev",
+    "dev": "concurrently --kill-others-on-fail \"npm start\" \"npm run client\""
   },
   "author": "oki kehinde",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
