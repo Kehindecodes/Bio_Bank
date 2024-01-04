@@ -29,19 +29,19 @@ To run Bio Bank locally, ensure you have the following tools installed
 git clone https://github.com/Kehindecodes/Bio_Bank
 ```
 
-1. Navigate to project directory:
+2. Navigate to project directory:
 
 ```bash
 cd Bio_Bank
 ```
 
-1. Install dependencies :
+3. Install dependencies :
 
 ```bash
 npm install
 ```
 
-1. Install backend and frontend dependencies :
+3. Install backend and frontend dependencies :
 
 ```bash
 # Install backend dependencies
@@ -54,9 +54,9 @@ cd bio-bank
 npm install
 ```
 
-1. Configure Database:
+4. Configure Database:
 - Edit `server/src/services/database.config.js` with your MySQL credentials.
-1.  Run Application from root folder:
+5.  Run Application from root folder:
 
 ```bash
 npm run dev
@@ -84,14 +84,14 @@ The project is organized into server and client folders, each with its own set o
 cd server
 ```
 
-1. Install Dependencies
+2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-1. Configure database in `server/src/services/database.config.js`
-2. Run backend server
+3. Configure database in `server/src/services/database.config.js`
+4. Run backend server
 
 ```bash
 npm run dev
@@ -141,13 +141,13 @@ cd client
 cd bio-bank
 ```
 
-1. Install dependencies
+2. Install dependencies
 
 ```bash
 npm install
 ```
 
-1. Run frontend development  server
+3. Run frontend development  server
 
 ```bash
 npm run dev
