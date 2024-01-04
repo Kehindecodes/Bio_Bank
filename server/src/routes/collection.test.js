@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const {sequelize,checkConnection} = require('../services/database.config');
+const { json } = require('sequelize');
 
 describe('Collection API', () => {
     beforeAll(async () => {
@@ -16,7 +17,7 @@ describe('Collection API', () => {
             .expect('Content-Type', /json/)
             .expect(200);
 
-            expect(response.body).toBeInstanceOf(Array);
+            expect(response.body.result).toBeInstanceOf(Array);
         })
     });
     describe('POST /api/v1/collections', () => {

@@ -1,7 +1,6 @@
 const express = require('express');
 const {sequelize} = require('./services/database.config');
 const collectionRouter = require('./routes/collection.route');
-const Collection = require('./models/Collection');
 const cors = require('cors');
 
 const app = express();

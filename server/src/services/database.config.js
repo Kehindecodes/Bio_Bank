@@ -1,9 +1,12 @@
 const { Sequelize } = require('sequelize');
+require ('dotenv').config();
 
-const sequelize = new Sequelize('bio_bank', 'root', '', {
-  host: '127.0.0.1',
+const { DB_USER, DB_PASSWORD, DB_HOST} = process.env;
+const sequelize = new Sequelize('bio_bank', DB_USER, DB_PASSWORD, {
+  host: DB_HOST,
   dialect: 'mysql',
 });
+
 
 
  async function checkConnection(){

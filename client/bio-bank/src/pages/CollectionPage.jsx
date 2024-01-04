@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CollectionTable from "../components/CollectionTable";
 import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import FormModal from "../components/FormModal";
-import useSWR, { useSWRConfig } from "swr";
-import axios from "axios";
+import useSWR from "swr";
 import SkeletonLoader from "../components/SkeletonLoader";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -21,7 +20,6 @@ import { createCollectionOptions } from "../api/SWROptions";
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -66,7 +64,7 @@ function CollectionPage() {
         const response = await createCollection(newCollection);
         return [response, ...collections.result];
     };
-    
+
     const handlePageChange = async (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
@@ -142,9 +140,14 @@ function CollectionPage() {
                     ) : (
                         <>
                             {" "}
-                             {  collections  && collections.result &&  collections.result.length === 0 ? (
+                            {collections &&
+                            collections.result &&
+                            collections.result.length === 0 ? (
                                 <div className="w-full h-full flex items-center justify-center">
-                                    <p className="text-2xl font-bold text-surface-600 my-auto "> There are no collections yet </p>
+                                    <p className="text-2xl font-bold text-surface-600 my-auto ">
+                                        {" "}
+                                        There are no collections yet{" "}
+                                    </p>
                                 </div>
                             ) : (
                                 <>
@@ -158,7 +161,6 @@ function CollectionPage() {
                                     />
                                 </>
                             )}
-                          
                         </>
                     )}
                     {isOpen && (
@@ -177,7 +179,6 @@ function CollectionPage() {
                             onSubmit={handleSubmit(onSubmit)}
                             errors={errors}
                             register={register}
-                            isLoading={loading}
                         />
                     )}
                 </div>
