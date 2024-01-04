@@ -114,10 +114,9 @@ All API responses are delivered in JSON format, with clear error codes and messa
 - `POST /api/v1/collections/:id/samples` : Add a new sample to a specific collection
 
 ### Testing:
-- Tests cover key functionalities like data retrieval, creation, and manipulation.
-- Error handling for various scenarios like missing data or invalid requests is verified.
-- Tests utilize `supertest` and interact directly with the database for accurate validation.
-- Run backend test using
+The backend API endpoints are covered by a suite of automated tests to ensure their correctness and robustness. These tests use the `supertest` library to simulate HTTP requests and assert expected responses.
+
+Run backend test :
 ```bash
 npm test
 ```
