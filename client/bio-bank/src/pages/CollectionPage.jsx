@@ -154,11 +154,16 @@ function CollectionPage() {
                                     <CollectionTable
                                         collections={displayedCollection}
                                     />
-                                    <Pagination
-                                        currentPage={currentPage}
-                                        totalPages={totalPages}
-                                        onPageChange={handlePageChange}
-                                    />
+                                    if({collections.totalRecords > itemsPerPage}){
+                                            <Pagination
+                                            currentPage={currentPage}
+                                            totalPages={totalPages}
+                                            totalItems={collections.totalRecords}
+                                            onPageChange={handlePageChange}
+                                            itemsPerPage={itemsPerPage}
+                                        />
+                                    }
+                                   
                                 </>
                             )}
                         </>

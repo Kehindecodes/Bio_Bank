@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const [inputPage, setInputPage] = useState('');
+const Pagination = ({ currentPage, totalPages, totalItems, onPageChange, itemsPerPage }) => {
+    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   
   const renderPageNumbers = () => {
-    const visiblePageNumbers = 3;
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+    const visiblePageNumbers = 5;
     const startIndex = Math.max(currentPage - Math.floor(visiblePageNumbers / 2), 1);
     const endIndex = Math.min(startIndex + visiblePageNumbers - 1, totalPages);
-    
     return pageNumbers.slice(startIndex - 1, endIndex).map((page) => (
         <button
           key={page}
@@ -22,11 +22,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       ));
     };
   
-    const handleInputChange = (e) => {
-      const value = e.target.value;
-      setInputPage(value);
-    };
-  
     /**
      * Handles the click event when the "Go" button is clicked.
      *
@@ -34,13 +29,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
      * @param {number} totalPages - The total number of pages.
      * @param {function} onPageChange - The function to call when the page is changed.
      */
-    const handleGoClick = () => {
-      const pageNumber = parseInt(inputPage, 10);
-      if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
-        onPageChange(pageNumber);
-        setInputPage('');
-      }
-    };
   
     return (
       <div className="flex justify-center items-center mt-4">
@@ -69,19 +57,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </button>
   
         <div className="flex items-center mx-4">
-          <input
-            type="text"
-            className="border border-line-divider px-1 py-3 rounded-xl bg-surface-100 text-surface-600 text-sm w-16 focus:outline-none"
-            value={inputPage}
-            onChange={handleInputChange}
-          />
-          <button
-            onClick={handleGoClick}
-            className="bg-primary-500 text-surface-100 py-1 px-2 ml-2 rounded-xl cursor-pointer focus:outline-none"
-          >
-            Go
-          </button>
-        </div>
+        <div className="text-sm text-neutral-500">
+            Showing {startItem}-{endItem} of {totalItems}
+      </div>
+            
+        </div> 
+         
       </div>
     );
 
