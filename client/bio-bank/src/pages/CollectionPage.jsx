@@ -16,10 +16,13 @@ import {
     collectionsUrlEndpoint,
 } from "../api/collectionApi";
 import { createCollectionOptions } from "../api/SWROptions";
+import { SearchInput } from "../components/SearchInput";
+import { NotFound } from "../components/NotFound";
 
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
+    const [searchTerm , setSearchTerm] = useState("");
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -112,6 +115,17 @@ function CollectionPage() {
             console.log(error);
         }
     };
+    const filteredCollections = displayedCollection.filter((filteredCollection) => {
+		if (searchTerm === '') {
+			return filteredCollection;
+		} else if (
+			filteredCollection.title.toLowerCase().includes(searchItem.toLowerCase())
+		) {
+			return filteredCollection;
+		} else {
+			return null;
+		}
+	});
     return (
         <>
             <div className="w-screen  h-full bg-surface-100">
@@ -121,6 +135,7 @@ function CollectionPage() {
                         <h1 className="text-3xl font-bold text-grayLight">
                             Collections
                         </h1>
+                        <SearchInput/>
                         <Button
                             className="text-lg text-surface-100 bg-primary-500 hover:bg-primary-600 justify-self-end py-2 px-4"
                             onClick={toggleModal}
@@ -143,14 +158,10 @@ function CollectionPage() {
                             {collections &&
                             collections.result &&
                             collections.result.length === 0 ? (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <p className="text-2xl font-bold text-surface-600 my-auto ">
-                                        {" "}
-                                        There are no collections yet{" "}
-                                    </p>
-                                </div>
+                                <NotFound value={"No collections found"}/>
                             ) : (
                                 <>
+                                  
                                     <CollectionTable
                                         collections={displayedCollection}
                                     />
