@@ -1,0 +1,5 @@
+@media only screen and (max-width: 640px) { /* Adjust 640px to your preferred breakpoint for small screens */
+    .search-input-component {
+        display: none;
+    }
+}

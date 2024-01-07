@@ -1,15 +1,13 @@
-import { useState } from 'react';
-
 const Pagination = ({ currentPage, totalPages, totalItems, onPageChange, itemsPerPage }) => {
     const startItem = (currentPage - 1) * itemsPerPage + 1;
     const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   
   const renderPageNumbers = () => {
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-    const visiblePageNumbers = 5;
+    const visiblePageNumbers = 3;
     const startIndex = Math.max(currentPage - Math.floor(visiblePageNumbers / 2), 1);
     const endIndex = Math.min(startIndex + visiblePageNumbers - 1, totalPages);
-    return pageNumbers.slice(startIndex - 1, endIndex).map((page) => (
+    return pageNumbers.slice(startIndex-1, endIndex).map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
