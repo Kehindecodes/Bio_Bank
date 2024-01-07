@@ -56,6 +56,7 @@ npm install
 
 4. Configure Database:
 - Edit `server/src/services/database.config.js` with your MySQL credentials.
+  
 5.  Run Application from root folder:
 
 ```bash
@@ -63,6 +64,15 @@ npm run dev
 ```
 
 This command starts both the backend server and frontend client concurrently.
+
+6. Access Application:
+- Launch your web browser and navigate to the following address:
+
+```markdown
+http://localhost:5173/
+```
+
+This will open the Bio Bank application in your browser, ready for use.
 
 ## Project Structure
 
