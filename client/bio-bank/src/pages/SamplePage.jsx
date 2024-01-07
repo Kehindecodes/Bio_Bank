@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { addSample, delay } from "../api/sampleApi";
 import { addSampleOptions } from "../api/SWROptions";
-import { NotFound } from "../components/NotFound";
+import NotFound  from "../components/NotFound";
 
 const fetcher = async (url) => {
     await delay();

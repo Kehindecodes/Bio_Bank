@@ -1,5 +1,5 @@
 import { FaSearch } from "react-icons/fa";
-export const SearchInput = ({ onSearch, value }) => {
+const SearchInput = ({ onSearch, value }) => {
     return (
         <div className="relative w-96 search-input-component">
             <input
@@ -15,3 +15,4 @@ export const SearchInput = ({ onSearch, value }) => {
         </div>
     );
 };
+export default SearchInput

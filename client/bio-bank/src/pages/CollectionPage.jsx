@@ -16,8 +16,8 @@ import {
     collectionsUrlEndpoint,
 } from "../api/collectionApi";
 import { createCollectionOptions } from "../api/SWROptions";
-import { SearchInput } from "../components/SearchInput";
-import { NotFound } from "../components/NotFound";
+import SearchInput  from "../components/SearchInput";
+import NotFound  from "../components/NotFound";
 
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -168,9 +168,15 @@ function CollectionPage() {
                                 <NotFound value={"No collections found"} />
                             ) : (
                                 <>
-                                    <CollectionTable
+                                     {displayedCollection.length === 0 ? (
+                                        <SkeletonLoader />
+                                     ): (
+                                        <CollectionTable
                                         collections={displayedCollection}
                                     />
+                                     )
+                                    }
+
                                     {filteredCollections &&
                                     filteredCollections.length >
                                         itemsPerPage ? (
