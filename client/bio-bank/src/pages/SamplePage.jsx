@@ -76,7 +76,6 @@ function SamplePage() {
     const onSubmit = async (inputs) => {
         const{input1, input2} = inputs;
         try{
-            // console.log(data)
             await handleAddSample({donorCount: parseInt(input1), materialType: input2});
         }catch(error){
             console.log(error)
