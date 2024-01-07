@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6"
 import {addSample, delay} from "../api/sampleApi";
 import { addSampleOptions } from "../api/SWROptions";
+import { NotFound } from "../components/NotFound";
 
 const fetcher = async (url) => {
     await delay();
@@ -110,7 +111,7 @@ function SamplePage() {
                     {isLoading ? (
                         <SkeletonLoader />
                     ) :samples.length === 0 ? (
-                        <p className="text-2xl font-bold text-surface-600 mt-10 text-center w-full h-full my-auto "> There are no samples in this collection </p>
+                        <NotFound value={"There are no samples in this collection"} />
                     ) : (
                         <SampleTable samples={samples } />
                     )}
