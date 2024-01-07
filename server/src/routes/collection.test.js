@@ -30,21 +30,21 @@ describe('Collection API', () => {
             title: '',
         }
         test('it should create a new collection', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections')
             .send(reqBody)
             .expect('Content-Type', /json/)
             .expect(201);
         })
         test('it should not create a new collection if collection already exists', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections')
             .send(reqBody)
             .expect('Content-Type', /json/)
             .expect(400);
         })
         test('it should not create a new collection if request body is incomplete', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections')
             .send(incompleteReqBody)
             .expect('Content-Type', /json/)
@@ -57,28 +57,28 @@ describe('Collection API', () => {
             materialType: 'test',
         }
         test('it should add a new sample to a collection', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections/11/samples')
             .send(reqBody)
             .expect('Content-Type', /json/)
             .expect(201);
         })
         test('it should not add a new sample to a collection if request body is incomplete', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections/11/samples')
             .send({})
             .expect('Content-Type', /json/)
             .expect(400);
         })
         test('it should not add a new sample to a collection if collection does not exist', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections/1000/samples')
             .send(reqBody)
             .expect('Content-Type', /json/)
             .expect(404);
         })
         test('it should not add a new sample to a collection if donorCount is not a number', async () => {
-            const response = await request(app)
+            await request(app)
             .post('/api/v1/collections/11/samples')
             .send({
                 donorCount: 'test',

@@ -11,8 +11,8 @@ import { useParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaArrowLeftLong } from "react-icons/fa6"
-import {addSample, delay} from "../api/sampleApi";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { addSample, delay } from "../api/sampleApi";
 import { addSampleOptions } from "../api/SWROptions";
 import { NotFound } from "../components/NotFound";
 
@@ -34,15 +34,20 @@ function SamplePage() {
         formState: { errors },
     } = useForm();
 
-    const { data:samples, error, isLoading, mutate } = useSWR(
-        `http://localhost:5050/api/v1/collections/${collectionId}/samples`, 
+    const {
+        data: samples,
+        error,
+        isLoading,
+        mutate,
+    } = useSWR(
+        `http://localhost:5050/api/v1/collections/${collectionId}/samples`,
         fetcher
     );
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
-    
+
     /**
      * Adds a new sample to the list of samples and returns the updated list.
      *
@@ -50,51 +55,59 @@ function SamplePage() {
      * @param {Array} samples - The current list of samples.
      * @return {Array} - The updated list of samples.
      */
-    const addMutation = async (newSample, samples) =>{
-        const response = await addSample(collectionId,newSample);
+    const addMutation = async (newSample, samples) => {
+        const response = await addSample(collectionId, newSample);
         return [...samples, response];
-    }
+    };
 
     const handleAddSample = async (newSample) => {
-        try{
-            mutate(addMutation(newSample, samples), addSampleOptions(newSample))
-            toast.success("Sample Added successfully",{
-                duration: 1000
-            })
-            reset()
+        try {
+            mutate(
+                addMutation(newSample, samples),
+                addSampleOptions(newSample)
+            );
+            toast.success("Sample Added successfully", {
+                duration: 1000,
+            });
+            reset();
             setTimeout(() => {
-                toggleModal()
-            },1000)
-        }catch(error){
-            setLoading(false)
-            toast.error(error.response.data.message,{
-                duration: 1000
-            })
+                toggleModal();
+            }, 1000);
+        } catch (error) {
+            setLoading(false);
+            toast.error(error.response.data.message, {
+                duration: 1000,
+            });
         }
-    }
+    };
 
     const onSubmit = async (inputs) => {
-        const{input1, input2} = inputs;
-        try{
-            await handleAddSample({donorCount: parseInt(input1), materialType: input2});
-        }catch(error){
-            console.log(error)
+        const { input1, input2 } = inputs;
+        try {
+            await handleAddSample({
+                donorCount: parseInt(input1),
+                materialType: input2,
+            });
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
 
     return (
         <>
             <div className="w-screen h-full  bg-surface-100">
                 <Header />
                 <div className="mt-10 p-10 mb-12 h-screen ">
-                    {/* back button with icon from react-icons */}
                     <div className="mb-10 w-1/4">
-                    <Link to={`/`} className={`text-surface-600 hover:text-primary-500 flex items-center text-lg`}>
-                      <FaArrowLeftLong />  <span className="ml-2">Back to Collection </span> 
-                    </Link>
+                        <Link
+                            to={`/`}
+                            className={`text-surface-600 hover:text-primary-500 flex items-center text-lg`}
+                        >
+                            <FaArrowLeftLong />{" "}
+                            <span className="ml-2">Back to Collection </span>
+                        </Link>
                     </div>
-                     
-                    
+
                     <div className="flex items-center justify-between w-full">
                         <h1 className="text-3xl font-bold text-grayLight">
                             List of Samples
@@ -109,30 +122,31 @@ function SamplePage() {
                     {error && <p>There was an error fetching samples</p>}
                     {isLoading ? (
                         <SkeletonLoader />
-                    ) :samples.length === 0 ? (
-                        <NotFound value={"There are no samples in this collection"} />
+                    ) : samples.length === 0 ? (
+                        <NotFound
+                            value={"There are no samples in this collection"}
+                        />
                     ) : (
-                        <SampleTable samples={samples } />
+                        <SampleTable samples={samples} />
                     )}
-                    {/* <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} /> */}
                     {isOpen && (
                         <FormModal
-                        title="Add New Sample"
-                        input1={{
-                            type: "number",
-                            placeholder: "Donor Count",
-                        }}
-                        input2={{
-                            type: "text",
-                            placeholder: "Material Type",
-                        }}
-                        ctaText={"Add"}
-                        onCancel={toggleModal}
-                        onSubmit={handleSubmit(onSubmit)}
-                        errors={errors}
-                        register={register}
-                        isLoading={loading}
-                    />
+                            title="Add New Sample"
+                            input1={{
+                                type: "number",
+                                placeholder: "Donor Count",
+                            }}
+                            input2={{
+                                type: "text",
+                                placeholder: "Material Type",
+                            }}
+                            ctaText={"Add"}
+                            onCancel={toggleModal}
+                            onSubmit={handleSubmit(onSubmit)}
+                            errors={errors}
+                            register={register}
+                            isLoading={loading}
+                        />
                     )}
                 </div>
                 <ToastContainer

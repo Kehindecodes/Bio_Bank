@@ -1,6 +1,4 @@
-
-
-function Header() {
+export function Header() {
     return (
         <header className="">
             <nav className="flex items-center justify-between py-6 px-10">
@@ -13,5 +11,3 @@ function Header() {
         
     )
 }
-
-export default Header

@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CollectionTable from "../components/CollectionTable";
@@ -22,9 +22,9 @@ import { NotFound } from "../components/NotFound";
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
-    const [searchTerm , setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     const itemsPerPage = 5;
-    const startIndex = (currentPage-1) * itemsPerPage;
+    const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
     const {
@@ -43,12 +43,6 @@ function CollectionPage() {
         onSuccess: (collections) =>
             collections.result.sort((a, b) => b.id - a.id),
     });
-
-   
-    // const displayedCollection =
-    //     collections &&
-    //     collections.result &&
-    //     collections.result.slice(startIndex, endIndex);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -115,21 +109,30 @@ function CollectionPage() {
     };
     const onChange = (e) => {
         setSearchTerm(e.target.value);
-    }
-    const filteredCollections = collections && collections.result && collections.result.filter((collection) => {
-        if (searchTerm === '') {
-            return true;
-        } else {
-            return collection.title.toLowerCase().includes(searchTerm.toLowerCase());
-        }
-    });
+    };
+    const filteredCollections =
+        collections &&
+        collections.result &&
+        collections.result.filter((collection) => {
+            if (searchTerm === "") {
+                return true;
+            } else {
+                return collection.title
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+            }
+        });
     const totalPages = Math.ceil(
         filteredCollections ? filteredCollections.length / itemsPerPage : 0
     );
-    // Ensure that we don't attempt to slice beyond the end of the array
-    const safeEndIndex = Math.min(endIndex, filteredCollections ? filteredCollections.length : 0);
-    
-    const displayedCollection = filteredCollections ? filteredCollections.slice(startIndex, safeEndIndex) : [];
+    const safeEndIndex = Math.min(
+        endIndex,
+        filteredCollections ? filteredCollections.length : 0
+    );
+
+    const displayedCollection = filteredCollections
+        ? filteredCollections.slice(startIndex, safeEndIndex)
+        : [];
 
     return (
         <>
@@ -160,25 +163,31 @@ function CollectionPage() {
                     ) : (
                         <>
                             {" "}
-                            {filteredCollections && filteredCollections.length === 0 ? (
-                                <NotFound value={"No collections found"}/>
+                            {filteredCollections &&
+                            filteredCollections.length === 0 ? (
+                                <NotFound value={"No collections found"} />
                             ) : (
                                 <>
                                     <CollectionTable
                                         collections={displayedCollection}
                                     />
-                                    {filteredCollections && filteredCollections.length > itemsPerPage ? <>
-                                        <Pagination
-                                            currentPage={currentPage}
-                                            totalPages={totalPages}
-                                            totalItems={filteredCollections.length}
-                                            onPageChange={handlePageChange}
-                                            itemsPerPage={itemsPerPage}
-                                        />
-                                    </> : <></>}
-
-                                    
-                                   
+                                    {filteredCollections &&
+                                    filteredCollections.length >
+                                        itemsPerPage ? (
+                                        <>
+                                            <Pagination
+                                                currentPage={currentPage}
+                                                totalPages={totalPages}
+                                                totalItems={
+                                                    filteredCollections.length
+                                                }
+                                                onPageChange={handlePageChange}
+                                                itemsPerPage={itemsPerPage}
+                                            />
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
                                 </>
                             )}
                         </>

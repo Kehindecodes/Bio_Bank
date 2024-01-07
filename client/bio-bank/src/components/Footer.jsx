@@ -1,4 +1,3 @@
-
 function Footer () {
     return (
         <footer className="px-10 mt-28 bottom-0 w-full">

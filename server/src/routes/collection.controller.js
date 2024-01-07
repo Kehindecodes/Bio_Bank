@@ -1,6 +1,6 @@
 const Collection = require("../models/Collection");
-const Sample = require('../models/Sample');
-const { getPagination } = require("../services/query");
+const Sample = require("../models/Sample");
+
 // create a new collection
 async function createCollection(req, res) {
     try {
@@ -15,7 +15,7 @@ async function createCollection(req, res) {
                 message: "title is required",
             });
         }
-      const collection =   await Collection.create({
+        const collection = await Collection.create({
             diseaseTerm,
             title,
         });
@@ -26,21 +26,16 @@ async function createCollection(req, res) {
 }
 
 async function getAllCollection(req, res) {
-    // const { skip, limit } = getPagination(req.query);
     try {
-        const collections = await Collection.findAll({
-            // offset: skip,
-            // limit: limit,
-            // order: [["createdAt", "DESC"]],
-        });
+        const collections = await Collection.findAll({});
         // get total records in the database
         const totalRecords = await Collection.count();
-         res.status(200).json({
-             result: collections,
-             totalRecords: totalRecords
-         });
+        res.status(200).json({
+            result: collections,
+            totalRecords: totalRecords,
+        });
     } catch (error) {
-         res.status(500).json({ error: "Failed to get collections" });
+        res.status(500).json({ error: "Failed to get collections" });
     }
 }
 // add a new sample to a collection
@@ -64,10 +59,10 @@ async function addSample(req, res) {
         });
     }
     try {
-       const sample =  await Sample.create({
+        const sample = await Sample.create({
             collectionId,
             donorCount,
-            materialType
+            materialType,
         });
         res.status(201).json(sample);
     } catch (error) {
@@ -81,33 +76,14 @@ async function getAllSamples(req, res) {
     try {
         const samples = await Sample.findAll({
             where: {
-                collectionId: collectionId
+                collectionId: collectionId,
             },
-           
-
         });
         res.status(200).json(samples);
     } catch (error) {
         res.status(500).json({ error: "Failed to get samples" });
-    }     
-     }
-
-// // deletes all sample from a collection
-// async function deleteSample(req, res) {
-//     const collectionId = req.params.collectionId;
-//     try {
-//         await Sample.destroy({
-//             where: {
-//                 // id: sampleId,
-//                 collectionId: collectionId
-//             }
-//         });
-//         res.status(200).json({ message: "Sample deleted successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: "Failed to delete sample" });
-//     }
-// }
-
+    }
+}
 
 module.exports = {
     createCollection,
