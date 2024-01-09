@@ -74,7 +74,6 @@ function SamplePage() {
                 toggleModal();
             }, 1000);
         } catch (error) {
-            // setLoading(false);
             toast.error(error.response.data.message, {
                 duration: 1000,
             });
