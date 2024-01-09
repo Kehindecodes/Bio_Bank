@@ -80,7 +80,7 @@ function SamplePage() {
             });
         }
     };
-
+// Submits the inputs to the server
     const onSubmit = async (inputs) => {
         const { input1, input2 } = inputs;
         try {

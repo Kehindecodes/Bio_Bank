@@ -110,30 +110,30 @@ function CollectionPage() {
     const onChange = (e) => {
         setSearchTerm(e.target.value);
     };
-    const filteredCollections =
-        collections &&
-        collections.result &&
-        collections.result.filter((collection) => {
-            if (searchTerm === "") {
-                return true;
-            } else {
-                return collection.title
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
-            }
-        });
-    const totalPages = Math.ceil(
-        filteredCollections ? filteredCollections.length / itemsPerPage : 0
-    );
-    const safeEndIndex = Math.min(
-        endIndex,
-        filteredCollections ? filteredCollections.length : 0
-    );
 
-    const displayedCollection = filteredCollections
-        ? filteredCollections.slice(startIndex, safeEndIndex)
-        : [];
-
+       const filteredCollections = // Filter collections based on search term
+           collections &&
+           collections.result &&
+           collections.result.filter((collection) => {
+               if (searchTerm === "") { // If search term is empty, return all collections
+                   return true;
+               } else { // Otherwise, filter collections based on title
+                   return collection.title
+                       .toLowerCase()
+                       .includes(searchTerm.toLowerCase());
+               }
+           });
+       const totalPages = Math.ceil( // Calculate the total number of pages
+           filteredCollections ? filteredCollections.length / itemsPerPage : 0
+       );
+       const safeEndIndex = Math.min( // Calculate the safe end index
+           endIndex,
+           filteredCollections ? filteredCollections.length : 0
+       );
+   
+       const displayedCollection = filteredCollections // Get the displayed collection
+           ? filteredCollections.slice(startIndex, safeEndIndex)
+           : [];
     return (
         <>
             <div className="w-screen  h-full bg-surface-100">
