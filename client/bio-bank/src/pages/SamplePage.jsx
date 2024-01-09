@@ -62,7 +62,7 @@ function SamplePage() {
 
     const handleAddSample = async (newSample) => {
         try {
-            mutate(
+            await mutate(
                 addMutation(newSample, samples),
                 addSampleOptions(newSample)
             );
@@ -74,7 +74,7 @@ function SamplePage() {
                 toggleModal();
             }, 1000);
         } catch (error) {
-            setLoading(false);
+            // setLoading(false);
             toast.error(error.response.data.message, {
                 duration: 1000,
             });
