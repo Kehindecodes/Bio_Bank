@@ -1,4 +1,5 @@
-const Collection = require('../models/Collection');
+import { Request, Response, NextFunction } from 'express';
+import Collection from '../models/Collection';
 
 /**
  * Checks if a collection exists and calls the next middleware if it does.
@@ -7,7 +8,7 @@ const Collection = require('../models/Collection');
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-async function checkCollection(req, res, next) {
+export async function checkCollection(req: Request, res: Response, next: NextFunction): Promise<void>  {
     const collectionId = req.params.collectionId;
     const collection = await Collection.findOne({
         where: {
@@ -15,13 +16,10 @@ async function checkCollection(req, res, next) {
         }
     });
     if (!collection) {
-        return res.status(404).json({
+       res.status(404).json({
             message: 'Collection not found'
         });
     }
     next();
 }
 
-module.exports = {
-    checkCollection
-}

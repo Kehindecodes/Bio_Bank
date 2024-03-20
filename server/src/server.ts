@@ -1,6 +1,6 @@
-const http = require('http');
-const app = require('./app');
-const{checkConnection} = require('./services/database.config');
+import http from 'http'
+import app from './app';
+import {checkConnection} from './services/database.config';
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5050;

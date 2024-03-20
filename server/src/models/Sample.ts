@@ -1,6 +1,6 @@
-const {DataTypes, Model} = require('sequelize');
-const {sequelize} = require('../services/database.config');
-const Collection = require('./Collection');
+import {DataTypes, Model} from 'sequelize';
+import {sequelize} from '../services/database.config';
+import  Collection from './Collection';
 
 const Sample = sequelize.define('Sample', {
      donorCount: {
@@ -25,4 +25,4 @@ const Sample = sequelize.define('Sample', {
      createdAt: false
 })
 
-module.exports = Sample
+export default Sample

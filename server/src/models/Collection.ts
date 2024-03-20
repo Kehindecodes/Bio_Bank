@@ -1,5 +1,5 @@
- const {DataTypes, Model} = require('sequelize')
- const {sequelize} = require('../services/database.config')
+ import {DataTypes, Model} from 'sequelize';
+ import {sequelize} from '../services/database.config';
 
  const Collection = sequelize.define('Collection', {
      
@@ -16,4 +16,4 @@
      updatedAt: false
  })
 
- module.exports = Collection
+ export default Collection

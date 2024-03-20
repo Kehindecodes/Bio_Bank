@@ -1,9 +1,10 @@
-const Sample = require('../models/Sample');
+import { Request, Response, NextFunction } from 'express';
+import Sample from '../models/Sample';
 
 
-async function preventDuplicateSamplesInCollection(req, res, next) {
+export async function preventDuplicateSamplesInCollection(req: Request, res: Response, next: NextFunction) {
     const {materialType} = req.body;
-    const collectionId = req.params.collectionId;
+    const collectionId : number = Number(req.params.collectionId);
     const sample = await Sample.findOne({where: {collectionId, materialType}});
     if(sample){
         return res.status(400).json({
@@ -13,6 +14,3 @@ async function preventDuplicateSamplesInCollection(req, res, next) {
     next();
 }
 
-module.exports = {
-    preventDuplicateSamplesInCollection
-}

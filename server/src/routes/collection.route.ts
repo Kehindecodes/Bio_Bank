@@ -1,15 +1,14 @@
-const express = require("express");
-const {
+import express from 'express';
+import {
     createCollection,
     getAllCollection,
     addSample,
     getAllSamples,
-} = require("./collection.controller");
-const {
-    ensureUniqueCollection,
-} = require("../middleware/ensureUniqueCollection");
-const { preventDuplicateSamplesInCollection } = require("../middleware/preventDuplicateSamplesInCollection");
-const { checkCollection } = require("../middleware/checkCollection");
+} from './collection.controller';
+import { ensureUniqueCollection } from '../middleware/ensureUniqueCollection';
+  
+import {preventDuplicateSamplesInCollection } from '../middleware/preventDuplicateSamplesInCollection';
+import { checkCollection } from '../middleware/checkCollection';
 
 const collectionRouter = express.Router();
 
@@ -19,4 +18,4 @@ collectionRouter.get("/", getAllCollection);
 collectionRouter.get("/:collectionId/samples", checkCollection,  getAllSamples);
 collectionRouter.post("/:collectionId/samples", checkCollection, preventDuplicateSamplesInCollection, addSample);
 
-module.exports = collectionRouter;
+export default collectionRouter;

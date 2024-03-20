@@ -1,4 +1,5 @@
-const Collection = require('../models/Collection');
+import { Request, Response, NextFunction } from 'express';
+import Collection from '../models/Collection';
 
 /**
  * Ensures that the collection title is unique before saving it.
@@ -7,7 +8,7 @@ const Collection = require('../models/Collection');
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-async function ensureUniqueCollection(req, res, next) {
+export async function ensureUniqueCollection(req: Request, res: Response, next: NextFunction) {
     const {title} = req.body;
     const collection = await Collection.findOne({where: {title}});
     if(collection){
@@ -16,8 +17,4 @@ async function ensureUniqueCollection(req, res, next) {
         })
     }
     next();
-}
-
-module.exports = {
-    ensureUniqueCollection
 }
