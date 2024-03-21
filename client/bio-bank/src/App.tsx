@@ -1,3 +1,4 @@
+import React from 'react'
 import CollectionPage from './pages/CollectionPage'
 import './App.css'
 import SamplePage from './pages/SamplePage'

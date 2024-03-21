@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CollectionTable from "../components/CollectionTable";
@@ -7,7 +7,7 @@ import Pagination from "../components/Pagination";
 import FormModal from "../components/FormModal";
 import useSWR from "swr";
 import SkeletonLoader from "../components/SkeletonLoader";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -18,6 +18,8 @@ import {
 import { createCollectionOptions } from "../api/SWROptions";
 import SearchInput  from "../components/SearchInput";
 import NotFound  from "../components/NotFound";
+import { Collection, Collections, Input } from "../types/types";
+import { FetcherResponse, PublicConfiguration } from "swr/_internal";
 
 function CollectionPage() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,8 +42,9 @@ function CollectionPage() {
         isLoading,
         mutate,
     } = useSWR(collectionsUrlEndpoint, getCollections, {
-        onSuccess: (collections) =>
-            collections.result.sort((a, b) => b.id - a.id),
+        onSuccess: (data: Collections, key: string, config: Readonly<PublicConfiguration<Collections, any, (arg: string) => FetcherResponse<Collections>>>) => {
+            data.result.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+        },
     });
 
     const toggleModal = () => {
@@ -55,12 +58,18 @@ function CollectionPage() {
      * @param {Array} collections - The existing collections.
      * @return {Array} The updated collections with the new collection added.
      */
-    const createMutation = async (newCollection, collections) => {
-        const response = await createCollection(newCollection);
-        return [response, ...collections.result];
-    };
 
-    const handlePageChange = async (newPage) => {
+    const createMutation = async (newCollection: Collection, collections: Collections): Promise<Collections> => {
+    const response = await createCollection(newCollection);
+    // Assuming `createCollection` returns a single Collection object
+    // and you want to add this new collection to the existing collections
+    return {
+        ...collections,
+        result: [response, ...collections.result],
+        totalRecords: collections.totalRecords + 1, // Assuming you want to increment the total records count
+    };
+};
+    const handlePageChange = async (newPage: number): Promise<void> => {
         if (newPage >= 1 && newPage <= totalPages) {
             setCurrentPage(newPage);
         }
@@ -71,20 +80,25 @@ function CollectionPage() {
      * @param {object} newCollection - The new collection to be created.
      * @return {Promise} A promise that resolves with the result of the creation.
      */
-    const handleCreateCollection = async (newCollection) => {
+    const handleCreateCollection = async (newCollection: Collection) : Promise<void> => {
         try {
-            await mutate(
-                createMutation(newCollection, collections),
-                createCollectionOptions(newCollection)
-            );
-            toast.success("Collection created successfully", {
-                duration: 1000,
-            });
-            reset();
-            toggleModal();
-        } catch (err) {
+            if(collections){
+                await mutate(
+                    createMutation(newCollection, collections),
+                    createCollectionOptions(newCollection)
+                );
+                toast.success("Collection created successfully", {
+                    autoClose: 1000,
+                });
+                reset();
+                toggleModal();
+            }  else {
+                console.error("Collections data is not available.");
+            }
+            
+        } catch (err: any) {
             toast.error(err.response.data.message, {
-                duration: 1000,
+                autoClose: 1000,
             });
         }
     };
@@ -96,8 +110,8 @@ function CollectionPage() {
      *     @property {type} input2 - description of input2
      * @return {Promise} A promise that resolves when the submission is complete.
      */
-    const onSubmit = async (inputs) => {
-        const { input1, input2 } = inputs;
+    const onSubmit = async (inputs: FieldValues) : Promise<void> =>  {
+        const { input1, input2 } = inputs as Input;
         try {
             await handleCreateCollection({
                 diseaseTerm: input1,
@@ -107,14 +121,14 @@ function CollectionPage() {
             console.log(error);
         }
     };
-    const onChange = (e) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
        const filteredCollections = // Filter collections based on search term
            collections &&
            collections.result &&
-           collections.result.filter((collection) => {
+           collections.result.filter((collection): boolean => {
                if (searchTerm === "") { // If search term is empty, return all collections
                    return true;
                } else { // Otherwise, filter collections based on title
@@ -214,6 +228,7 @@ function CollectionPage() {
                             onSubmit={handleSubmit(onSubmit)}
                             errors={errors}
                             register={register}
+                            isLoading={isLoading}
                         />
                     )}
                 </div>

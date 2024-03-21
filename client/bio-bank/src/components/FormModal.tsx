@@ -1,3 +1,5 @@
+import React from "react";
+import { FormModalProps } from "../types/types";
 const FormModal = ({
     title,
     ctaText,
@@ -8,7 +10,7 @@ const FormModal = ({
     errors,
     register,
     isLoading,
-}) => {
+}: FormModalProps) => {
     return (
         <>
             <div className="fixed z-10 inset-0 overflow-y-auto">
